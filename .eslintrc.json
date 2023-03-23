@@ -1,3 +1,67 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended", "prettier"],
+  "plugins": [
+    "import",
+    "unused-imports"
+  ],
+  "rules": {
+    "@typescript-eslint/no-unused-vars": "off",
+    "unused-imports/no-unused-imports": "warn",
+    // importの並び順
+    "import/order": [
+      "error",
+      {
+        /**
+         * グループごとの並び順
+         * 1. node builtin モジュール
+         * 2. npm install したパッケージ
+         * 3. webpack などパスで設定したモジュール
+         * 親階層と子階層のファイル
+         * object
+         * type
+         * 同階層のファイル
+         */
+        "groups": [
+          "builtin",
+          "external",
+          "internal",
+          ["parent", "sibling"],
+          "object",
+          "type", 
+          "index"
+        ],
+        "newlines-between": "always", // pathGroups グループごとに改行を入れる
+        "pathGroupsExcludedImportTypes": ["builtin"],
+        "alphabetize": { "order": "asc", "caseInsensitive": true }, // 大文字小文字を区別せずアルファベット順に
+        // パターンマッチしたものをグループにする
+        "pathGroups": [
+          // react 関連を external より前にする
+          // "pathGroupsExcludedImportTypes": ["react"], にしてみたが `react`, `react-dom` などが別グループになってしまったので pattern で無理やり同じグループにした
+          {
+            "pattern": "react**",
+            "group": "external",
+            "position": "before"
+          },
+          // `@/app`, `@/features/`, `@/libs` の import をひとグループにして internal の前に
+          {
+            "pattern": "{@/app/**,@/features/**,@/libs/**}",
+            "group": "internal",
+            "position": "before"
+          },
+          // `@/components`, `@/pages` の import をグルーピング
+          {
+            "pattern": "{@/components/**,@/pages/**}",
+            "group": "internal",
+            "position": "before"
+          },
+          // CSS module を一番最後に
+          {
+            "pattern": "./**.module.css",
+            "group": "index",
+            "position": "after"
+          }
+        ]
+      }
+    ]
+  }
 }
