@@ -1,9 +1,14 @@
 {
-  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended", "prettier"],
-  "plugins": [
-    "import",
-    "unused-imports"
+  "env": {
+    "node": true,
+    "es6": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier"
   ],
+  "plugins": ["import", "unused-imports", "@typescript-eslint"],
   "rules": {
     "@typescript-eslint/no-unused-vars": "off",
     "unused-imports/no-unused-imports": "warn",
@@ -27,7 +32,7 @@
           "internal",
           ["parent", "sibling"],
           "object",
-          "type", 
+          "type",
           "index"
         ],
         "newlines-between": "always", // pathGroups グループごとに改行を入れる
