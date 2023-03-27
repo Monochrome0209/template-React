@@ -1,0 +1,23 @@
+name: Push to build app
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+ 
+# 以下はテストライブラリ導入後
+#      - name: Run Test
+#        run: npm run test
